@@ -57,10 +57,11 @@ public class Gui extends JFrame{
 				int moves = 0;
 				Algorithm a1 = new Algorithm(table, gameCounter);
 				if(moves < 9){
-						a1.userTurn();
-						moves++;
-						System.out.print(moves);
-						return; 
+					moves++;
+					a1.userTurn();
+						
+					System.out.print(moves);
+					return; 
 				}
 				
 						

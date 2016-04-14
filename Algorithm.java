@@ -6,11 +6,11 @@ import javax.swing.JTable;
 public class Algorithm {
 	
 	JTable tableAI = new JTable();
-	public int moves = 0; 
+	public static int moves = 0; 
 	public int gameCounter;
 	public Algorithm(JTable table1, int gameCounterImp){
-		tableAI = table1;
-		gameCounter = gameCounterImp;
+	tableAI = table1;
+	gameCounter = gameCounterImp;
 	}
 	
 	public void defend(int x, int y){
@@ -23,13 +23,13 @@ public class Algorithm {
 				if((x == 1) && (y == 1)){
 					tableAI.setValueAt("O", 0, 0);
 					moves++;
-					System.out.println("Move 2:" + moves);
-					userTurn();
+					System.out.println("AI Move 2:" + moves);
+					//userTurn();
 				}else{
 					tableAI.setValueAt("O", 1, 1);
 					moves++;
-					System.out.println("Move 2:" + moves);
-					userTurn();
+					System.out.println("AI Move 2:" + moves);
+					//userTurn();
 				}
 			}
 						
@@ -39,16 +39,16 @@ public class Algorithm {
 					if((x == 0 && y == 2)){					
 						tableAI.setValueAt("O", 2, 0);
 						moves++;
-						System.out.println("Move 3:" + moves);
-						userTurn();
+						System.out.println("AI Move 4:" + moves);
+						//userTurn();
 					}else if((x == 2 && y == 2)){
 						attack(x, y, 1);
-						System.out.println("Move 3:" + moves);
+						System.out.println("AI WINS");
 					}else{
 						tableAI.setValueAt("O", 0, 2);
 						moves++;
-						System.out.println("Move 3:" + moves);
-						userTurn();
+						System.out.println("AI Move 4:" + moves);
+						//userTurn();
 					}
 					
 				}
@@ -56,57 +56,57 @@ public class Algorithm {
 					if((x == 0 && y == 1)){					
 						tableAI.setValueAt("O", 2, 1);
 						moves++;
-						System.out.println("Move 3:" + moves);
-						userTurn();
+						System.out.println("AI Move 4:" + moves);
+						
+						//userTurn();
 					}else if((x == 1 && y == 0)){
 						tableAI.setValueAt("O", 1, 2);
 						moves++;
-						System.out.println("Move 3:" + moves);
-						userTurn();
+						System.out.println("AI Move 4:" + moves);
+						//userTurn();
 					}else if((x == 1 && y == 2)){
 						tableAI.setValueAt("O", 1, 0);
 						moves++;
-						System.out.println("Move 3:" + moves);
-						userTurn();
+						System.out.println("AI Move 4:" + moves);
+						//userTurn();
 					}else{
 						tableAI.setValueAt("O", 0, 1);
 						moves++;
-						System.out.println("Move 3:" + moves);
-						userTurn();
+						System.out.println("AI Move 4:" + moves);
+						//userTurn();
 					}
 				}
 		    }
-			if(moves == 6){
+			if(moves == 5){
 				if(cornerPlacement(x, y)){
 					
-					if((tableAI.getValueAt(0, 2) == "X" && tableAI.getValueAt(2, 2) == "X")){					
+					if((tableAI.getValueAt(0, 2) == "X" && tableAI.getValueAt(2, 2) == "X") && tableAI.getValueAt(1, 1) == "X"){					
 						attack(x,y, 2);
-						 System.out.println("Move 3:" + moves);
-						userTurn();
+						System.out.println("AI Move 6:" + moves + " AI WINS");
 					}else if((tableAI.getValueAt(0, 2) ==  "X" && tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(2, 0) == "O")){
 						attack(x, y, 2);
-						System.out.println("Move 3:" + moves);
+						System.out.println("AI Move 6:" + moves + " AI WINS");
 					}else if((tableAI.getValueAt(0, 2) ==  "X" && tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(2, 1) == "O")){
 						tableAI.setValueAt("O", 2, 0);
 						moves++;
-						System.out.println("Move 3:" + moves);
+						System.out.println("AI Move 6:" + moves);
 					}
 					
 				}
 				if(crossPlacement(x,y)){
 					if((tableAI.getValueAt(0, 2) ==  "X" && tableAI.getValueAt(0, 1) == "X")){
 						attack(x, y, 2);
-						System.out.println("Move 3:" + moves);
+						System.out.println("AI Move 6:" + moves + " AI WINS");
 					}else if((tableAI.getValueAt(2, 1) ==  "X" && tableAI.getValueAt(0, 2) == "X")){
 						attack(x,y,2);
+						System.out.println("AI Move 6:" + moves + " AI WINS");
+					}else if((tableAI.getValueAt(1, 2) ==  "X" && tableAI.getValueAt(0, 2) == "X")){
+						attack(x,y,2);
+						System.out.println("AI Move 6:" + moves + " AI WINS");
+					}else if((tableAI.getValueAt(1, 0) ==  "X" && tableAI.getValueAt(1, 1) == "X")){
+						tableAI.setValueAt("O", 1, 2);
 						moves++;
-						System.out.println("Move 3:" + moves);
-						userTurn();
-					}else{
-						tableAI.setValueAt("O", 0, 1);
-						moves++;
-						System.out.println("Move 3:" + moves);
-						userTurn();
+						//userTurn();
 					}
 				}
 		    }
@@ -117,12 +117,12 @@ public class Algorithm {
 		if(attackMove == 1){
 			tableAI.setValueAt("O", 0, 2);
 			moves++;
-			userTurn();
+			//userTurn();
 		}
-		//straight line on the left side of the board
 		if(attackMove == 2){
+			moves++;
 			tableAI.setValueAt("O", 1, 0);
-			checkWin(1);
+			//checkWin(1);
 		}
 	}
 	public void userTurn(){
