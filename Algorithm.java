@@ -17,150 +17,210 @@ public class Algorithm {
 	public void defend(int x, int y){
 		
 		if(gameCounter % 2 == 0){
-			if(moves == 1){
-				if((x == 1) && (y == 1)){
-					tableAI.setValueAt("O", 0, 0);
-					moves++;
-					System.out.println("AI Move 2:" + moves);
-				}else{
-					tableAI.setValueAt("O", 1, 1);
-					moves++;
-					System.out.println("AI Move 2:" + moves);
+			if(tableAI.getValueAt(1, 1) ==  "X"){
+				if(moves == 1){
+					if((x == 1) && (y == 1)){
+						tableAI.setValueAt("O", 0, 0);
+						moves++;
+						System.out.println("AI Move 2:" + moves);
+					}else{
+						tableAI.setValueAt("O", 1, 1);
+						moves++;
+						System.out.println("AI Move 2:" + moves);
+					}
+				}
+
+				if(moves == 3){
+					if(cornerPlacement(x, y)){
+						if(checkDefend()){
+							checkDefend();
+							moves++;
+							System.out.println("AI Move 4: " + moves);
+							return;
+						}							
+					}
+					if(crossPlacement(x,y)){
+						if(checkDefend()){
+							checkDefend();
+							moves++;
+							System.out.println("AI Move 4: " + moves);
+							return;
+						}
+					}
+				}
+				if(moves == 5){
+					if(cornerPlacement(x,y)){
+						if(checkWin()){
+							moves++;
+							return;
+						}
+						if(checkDefend()){
+
+							checkDefend();
+							moves++;
+							System.out.println("Something happened at move 5 corner " + moves);
+
+						}
+					}
+					if(crossPlacement(x,y)){
+
+						if(checkWin()){
+							moves++;
+							return;
+						}
+						if(checkDefend()){
+
+							checkDefend();
+							moves++;
+							System.out.println("Something happened at move 5 cross: " + moves);
+						}						
+					}
+				}
+				if(moves == 7){
+					System.out.println("Got to moves 7");
+					if(crossPlacement(x,y)){
+						if(checkWin()){
+							moves++;
+							return;
+						}
+						if(checkDefend()){
+
+
+							checkDefend();
+							moves++;
+							System.out.println("Something happened at move 7 cross");
+						}
+					}
+				}
+					if(cornerPlacement(x,y)){
+						if(checkWin()){
+							moves++;
+							return;
+						}
+						if(checkDefend()){
+
+							checkDefend();
+							moves++;
+							System.out.println("Something happened at move 7 corner");
+						}
+					}
+				
+				if(moves == 9){
+					if(checkWin() == false){
+						System.out.println("IT'S A DRAW!");
+					}
 				}
 			}
-						
+		
+		//Second move condition
+		if(tableAI.getValueAt(1, 1) != "X"){
+
+			if(moves == 1){
+				tableAI.setValueAt("O", 1, 1);
+				moves++;
+				System.out.println("AI Move 2:" + moves);
+			}
+
+
 			if(moves == 3){
 				if(cornerPlacement(x, y)){
-					
-					if((x == 0 && y == 2)){					
-						tableAI.setValueAt("O", 2, 0);
+					if(checkDefend()){
+						checkDefend();
 						moves++;
-						System.out.println("AI Move 4:" + moves);
-					}else if((x == 2 && y == 2)){
-						attack(x, y, 1);
-						System.out.println("AI WINS");
-					}else{
-						tableAI.setValueAt("O", 0, 2);
-						moves++;
-						System.out.println("AI Move 4:" + moves);
+						System.out.println("AI Move 4: " + moves);
+						return;
+					}	
+					else
+					{
+						findNull();
 					}
-					
 				}
 				if(crossPlacement(x,y)){
-					if((x == 0 && y == 1)){					
-						tableAI.setValueAt("O", 2, 1);
+					if(checkDefend()){
+						checkDefend();
 						moves++;
-						System.out.println("AI Move 4:" + moves);
-					}else if((x == 1 && y == 0)){
-						tableAI.setValueAt("O", 1, 2);
-						moves++;
-						System.out.println("AI Move 4:" + moves);
-					}else if((x == 1 && y == 2)){
-						tableAI.setValueAt("O", 1, 0);
-						moves++;
-						System.out.println("AI Move 4:" + moves);
-					}else{
-						tableAI.setValueAt("O", 0, 1);
-						moves++;
-						System.out.println("AI Move 4:" + moves);
+						System.out.println("AI Move 4: " + moves);
+						return;
+					}
+					else
+					{
+						findNull();
 					}
 				}
-		    }
+			}
 			if(moves == 5){
 				if(cornerPlacement(x,y)){
-					if((tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(0, 2) == "X") &&  y != 0 && tableAI.getValueAt(0, 1) != "X"){
-						attack(x,y,2);
-					}else if((tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(0, 2) == "X") &&  x == 1 && y == 0){
-						tableAI.setValueAt("O", 1, 2);
-					}else if(tableAI.getValueAt(1, 1) ==  "X" && (tableAI.getValueAt(2, 0) == "X" || tableAI.getValueAt(2, 2) == "X") && tableAI.getValueAt(1, 0) != "O" && tableAI.getValueAt(0,1)!= "X" && tableAI.getValueAt(1, 2) != "O"){
-						attack(x,y,3);
-					}else if((tableAI.getValueAt(1, 1) == "X" && (tableAI.getValueAt(2, 0) == "X" || tableAI.getValueAt(2, 2) == "X")) &&  x == 0 && y == 1){
-						tableAI.setValueAt("O", 2, 1);
-					}
-					if((tableAI.getValueAt(1, 1) ==  "X" && tableAI.getValueAt(1, 2) == "X") && tableAI.getValueAt(1,0) == "O"){
-						attack(x,y,4);
-					}
-					if(tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(2, 1) == "X" && tableAI.getValueAt(0, 1) == "O"){
-						attack(x,y,5);
-					}
-					if(tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(2, 1) == "O" && tableAI.getValueAt(1, 1) == "X"){
+					if(checkWin()){
 						moves++;
-						tableAI.setValueAt("O", 2, 0);
+						return;
 					}
-					if(tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(1, 0) == "X" && tableAI.getValueAt(1, 2) == "O" && x == 2 && y == 0){
-						tableAI.setValueAt("O", 0, 2);
+					if(checkDefend()){
+						checkDefend();
+						moves++;
+						System.out.println("AI Move 6: " + moves);
+					}
+					else
+					{
+						findNull();
 					}
 				}
 				if(crossPlacement(x,y)){
-					if((tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(0, 2) == "X") &&  y != 0){
-						attack(x,y,2);
-					}else if((tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(0, 2) == "X") &&  x == 1 && y == 0){
-						tableAI.setValueAt("O", 1, 2);
-					}else if(tableAI.getValueAt(1, 1) ==  "X" && (tableAI.getValueAt(2, 0) == "X" || tableAI.getValueAt(2, 2) == "X") && x != 0){
-						attack(x,y,3);
-					}else if((tableAI.getValueAt(1, 1) == "X" && (tableAI.getValueAt(2, 0) == "X" || tableAI.getValueAt(2, 2) == "X")) &&  x == 0 && y == 1){
-						tableAI.setValueAt("O", 2, 1);
-					}
-					if((tableAI.getValueAt(1, 1) ==  "X" && tableAI.getValueAt(1, 2) == "X") && tableAI.getValueAt(1, 0) == "O"){
-						attack(x,y,4);
-					}
-					if(tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(2, 1) == "X" && tableAI.getValueAt(0, 1) == "O"){
-						attack(x,y,5);
-					}
-					if(tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(2, 1) == "O" && x == 1 && y == 2){
+
+					if(checkWin()){
 						moves++;
-						tableAI.setValueAt("O", 1, 0);
+						return;
 					}
-					if(tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(2, 1) == "O" && x == 0 && y == 2){
+					if(checkDefend()){								
+						checkDefend();
 						moves++;
-						tableAI.setValueAt("O", 1, 2);
+						System.out.println("AI Move 6: " + moves);
 					}
-					if(tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(1, 0) == "X" && tableAI.getValueAt(1, 2) == "O" && x != 1 && y != 2){
-						attack(x,y,6);
+					else
+					{
+						findNull();
 					}
-					
+
 				}
-				/*if(cornerPlacement(x, y)){
-					if((tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(0, 2) == "X") && x != 1 && y != 0){
-						
-						attack(x,y,2);
-					//if((tableAI.getValueAt(0, 2) == "X" && tableAI.getValueAt(2, 2) == "X") && tableAI.getValueAt(1, 1) == "X"){					
-						//attack(x,y, 2);
-						//System.out.println("AI Move 6:" + moves + " AI WINS");
-					//}else if((tableAI.getValueAt(0, 2) ==  "X" && tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(2, 0) == "O")){
-						//attack(x, y, 2);
-						//System.out.println("AI Move 6:" + moves + " AI WINS");
-					}else if((tableAI.getValueAt(0, 2) ==  "X" && tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(2, 1) == "O")){
-						tableAI.setValueAt("O", 2, 0);
-						moves++;
-						System.out.println("AI Move 6:" + moves);
-					}else if((tableAI.getValueAt(1, 1) ==  "X" && tableAI.getValueAt(2, 0) == "X" && x != 0 && y != 1)){
-						attack(x,y,3);
-					}
-					
-				}
+			}
+			
+			if(moves == 7){
 				if(crossPlacement(x,y)){
-					if((tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(0, 2) == "X" && x != 1 && y != 0)){
-						
-						attack(x,y,2);
-					if((tableAI.getValueAt(0, 2) ==  "X" && tableAI.getValueAt(0, 1) == "X")){
-						attack(x, y, 2);
-						System.out.println("AI Move 6:" + moves + " AI WINS");
-					}else if((tableAI.getValueAt(2, 1) ==  "X" && tableAI.getValueAt(0, 2) == "X")){
-						attack(x,y,2);
-						System.out.println("AI Move 6:" + moves + " AI WINS");
-					}else if((tableAI.getValueAt(1, 2) ==  "X" && tableAI.getValueAt(0, 2) == "X")){
-						attack(x,y,2);
-						System.out.println("AI Move 6:" + moves + " AI WINS");
-					}}else if((tableAI.getValueAt(1, 0) ==  "X" && tableAI.getValueAt(1, 1) == "X")){
-						tableAI.setValueAt("O", 1, 2);
+					if(checkWin()){
 						moves++;
-						
-					}else if((tableAI.getValueAt(1, 1) ==  "X" && tableAI.getValueAt(2, 0) == "X" && x != 0 && y != 1)){
-						attack(x,y,3);
+						return;
 					}
-				}*/
-		    }
+					if(checkDefend()){
+						checkDefend();
+						moves++;
+						System.out.println("AI Move 7: " + moves);
+					}
+					else
+					{
+						findNull();
+					}
+				}
+				if(cornerPlacement(x,y)){
+					if(checkWin()){
+						moves++;
+						return;
+					}
+					if(checkDefend()){								
+						checkDefend();
+						moves++;
+						System.out.println("AI Move 7: " + moves);
+					}
+					else
+					{
+						findNull();
+					}
+				}
+			}
+			if(moves == 9){
+				if(checkWin() == false){
+					System.out.println("IT'S A DRAW!");
+				}
+			}
+		}
 		}
 	}
 	
@@ -172,17 +232,17 @@ public class Algorithm {
 		if(attackMove == 2){
 			moves++;
 			tableAI.setValueAt("O", 1, 0);
-			checkWin(1);
+			
 		}
 		if(attackMove == 3){
 			moves++;
 			tableAI.setValueAt("O", 0, 1);
-			checkWin(1);
+			//checkWin();
 		}
 		if(attackMove == 4){
 			moves++;
 			tableAI.setValueAt("O", 2, 0);
-			checkWin(1);
+			//checkWin();
 		}
 		if(attackMove == 5){
 			moves++;
@@ -228,10 +288,262 @@ public class Algorithm {
 			return false;
 	}
 	
-	private void checkWin(int winner){
-		if(winner == 1){
-			
+	private boolean checkWin(){
+		//Horizontal Win
+		if(((tableAI.getValueAt(0, 0) == "O" && tableAI.getValueAt(0, 1) == "O") || 
+		   (tableAI.getValueAt(0, 0) == "O" && tableAI.getValueAt(0, 2) == "O") ||
+		   (tableAI.getValueAt(0, 1) == "O" && tableAI.getValueAt(0, 2) == "O")) &&
+		   (tableAI.getValueAt(0, 0) == null || tableAI.getValueAt(0, 1) ==  null || tableAI.getValueAt(0, 2) == null)){
+			tableAI.setValueAt("O", 0, 0);
+			tableAI.setValueAt("O", 0, 1);
+			tableAI.setValueAt("O", 0, 2);
+			return true;
 		}
+		if(((tableAI.getValueAt(1, 0) == "O" && tableAI.getValueAt(1, 1) == "O") || 
+	       (tableAI.getValueAt(1, 0) == "O" && tableAI.getValueAt(1, 2) == "O") ||
+		   (tableAI.getValueAt(1, 1) == "O" && tableAI.getValueAt(1, 2) == "O")) &&
+			(tableAI.getValueAt(1, 0) == null || tableAI.getValueAt(1, 1) ==  null || tableAI.getValueAt(1, 2) == null)){
+			tableAI.setValueAt("O", 1, 0);
+			tableAI.setValueAt("O", 1, 1);
+			tableAI.setValueAt("O", 1, 2);
+			return true;
+		}
+		if(((tableAI.getValueAt(2, 0) == "O" && tableAI.getValueAt(2, 1) == "O") || 
+		   (tableAI.getValueAt(2, 0) == "O" && tableAI.getValueAt(2, 2) == "O") ||
+		   (tableAI.getValueAt(2, 1) == "O" && tableAI.getValueAt(2, 2) == "O")) &&
+		   (tableAI.getValueAt(2, 0) == null || tableAI.getValueAt(2, 1) ==  null || tableAI.getValueAt(2, 2) == null)){
+			tableAI.setValueAt("O", 2, 0);
+			tableAI.setValueAt("O", 2, 1);
+			tableAI.setValueAt("O", 2, 2);
+			return true;
+		}
+		//Vertical Wins
+		if(((tableAI.getValueAt(0, 0) == "O" && tableAI.getValueAt(1, 0) == "O") || 
+		   (tableAI.getValueAt(0, 0) == "O" && tableAI.getValueAt(2, 0) == "O") ||
+		   (tableAI.getValueAt(1, 0) == "O" && tableAI.getValueAt(2, 0) == "O")) &&
+		   (tableAI.getValueAt(0, 0) == null || tableAI.getValueAt(1, 0) ==  null || tableAI.getValueAt(2, 0) == null)){
+			tableAI.setValueAt("O", 0, 0);
+			tableAI.setValueAt("O", 1, 0);
+			tableAI.setValueAt("O", 2, 0);
+			return true;
+		}
+		if(((tableAI.getValueAt(0, 1) == "O" && tableAI.getValueAt(1, 1) == "O") || 
+		   (tableAI.getValueAt(0, 1) == "O" && tableAI.getValueAt(2, 1) == "O") ||
+		   (tableAI.getValueAt(1, 1) == "O" && tableAI.getValueAt(2, 1) == "O")) &&
+		   (tableAI.getValueAt(0, 1) == null || tableAI.getValueAt(1, 1) ==  null || tableAI.getValueAt(2, 1) == null)){
+			tableAI.setValueAt("O", 0, 1);
+			tableAI.setValueAt("O", 1, 1);
+			tableAI.setValueAt("O", 2, 1);
+			return true;
+		}
+		if(((tableAI.getValueAt(0, 2) == "O" && tableAI.getValueAt(1, 2) == "O") || 
+		   (tableAI.getValueAt(0, 2) == "O" && tableAI.getValueAt(2, 2) == "O") ||
+		   (tableAI.getValueAt(1, 2) == "O" && tableAI.getValueAt(2, 2) == "O")) &&
+		   (tableAI.getValueAt(0, 2) == null || tableAI.getValueAt(1, 2) ==  null || tableAI.getValueAt(2, 2) == null)){
+			tableAI.setValueAt("O", 0, 2);
+			tableAI.setValueAt("O", 1, 2);
+			tableAI.setValueAt("O", 2, 2);
+			return true;
+		}
+		//Diagonal Wins
+		if(((tableAI.getValueAt(0, 0) == "O" && tableAI.getValueAt(1, 1) == "O") || 
+		   (tableAI.getValueAt(0, 0) == "O" && tableAI.getValueAt(2, 2) == "O") ||
+		   (tableAI.getValueAt(1, 1) == "O" && tableAI.getValueAt(2, 2) == "O")) &&
+		   (tableAI.getValueAt(0, 0) == null || tableAI.getValueAt(1, 1) ==  null || tableAI.getValueAt(2, 2) == null)){
+			tableAI.setValueAt("O", 0, 0);
+			tableAI.setValueAt("O", 1, 1);
+			tableAI.setValueAt("O", 2, 2);
+			System.out.println("this statement");
+			return true;
+		}
+		if(((tableAI.getValueAt(0, 2) == "O" && tableAI.getValueAt(1, 1) == "O") || 
+		   (tableAI.getValueAt(0, 2) == "O" && tableAI.getValueAt(2, 0) == "O") ||
+		   (tableAI.getValueAt(1, 1) == "O" && tableAI.getValueAt(2, 0) == "O")) &&
+		   (tableAI.getValueAt(0, 2) == null || tableAI.getValueAt(1, 1) ==  null || tableAI.getValueAt(2, 0) == null)){
+			tableAI.setValueAt("O", 0, 2);
+			tableAI.setValueAt("O", 1, 1);
+			tableAI.setValueAt("O", 2, 0);
+			System.out.println("that statement");
+
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean checkDefend(){
+		if(((tableAI.getValueAt(0, 0) == "X" && tableAI.getValueAt(0, 1) == "X") || 
+				   (tableAI.getValueAt(0, 0) == "X" && tableAI.getValueAt(0, 2) == "X") ||
+				   (tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(0, 2) == "X")) &&
+				   (tableAI.getValueAt(0, 0) == null || tableAI.getValueAt(0, 1) ==  null || tableAI.getValueAt(0, 2) == null)){
+					if(tableAI.getValueAt(0, 0) == null){
+						tableAI.setValueAt("O", 0, 0);
+						return true;
+					}
+					if(tableAI.getValueAt(0, 1) == null){
+						tableAI.setValueAt("O", 0, 1);
+						return true;
+					}
+					if(tableAI.getValueAt(0, 1) == null){
+						tableAI.setValueAt("O", 0, 2);
+						return true;
+					}
+					
+					return true;
+				}
+				if(((tableAI.getValueAt(1, 0) == "X" && tableAI.getValueAt(1, 1) == "X") || 
+			       (tableAI.getValueAt(1, 0) == "X" && tableAI.getValueAt(1, 2) == "X") ||
+				   (tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(1, 2) == "X")) &&
+				   (tableAI.getValueAt(1, 0) == null || tableAI.getValueAt(1, 1) ==  null || tableAI.getValueAt(1, 2) == null)){
+					if(tableAI.getValueAt(1, 0) == null){
+						tableAI.setValueAt("O", 1, 0);
+						return true;
+
+					}
+					if(tableAI.getValueAt(1, 1) == null){
+						tableAI.setValueAt("O", 1, 1);
+						return true;
+
+					}
+					if(tableAI.getValueAt(1, 2) == null){
+						tableAI.setValueAt("O", 1, 2);
+						return true;
+
+					}
+					return true;
+				}
+				if(((tableAI.getValueAt(2, 0) == "X" && tableAI.getValueAt(2, 1) == "X") || 
+				   (tableAI.getValueAt(2, 0) == "X" && tableAI.getValueAt(2, 2) == "X") ||
+				   (tableAI.getValueAt(2, 1) == "X" && tableAI.getValueAt(2, 2) == "X")) &&
+				   (tableAI.getValueAt(2, 0) == null || tableAI.getValueAt(2, 1) ==  null || tableAI.getValueAt(2, 2) == null)){
+					if(tableAI.getValueAt(2, 0) == null){
+						tableAI.setValueAt("O", 2, 0);
+						return true;
+
+					}
+					if(tableAI.getValueAt(2, 1) == null){
+						tableAI.setValueAt("O", 2, 1);
+						return true;
+
+					}
+					if(tableAI.getValueAt(2, 2) == null){
+						tableAI.setValueAt("O", 2, 2);
+						return true;
+
+					}
+					return true;
+				}
+				//Vertical Defend
+				if(((tableAI.getValueAt(0, 0) == "X" && tableAI.getValueAt(1, 0) == "X") || 
+				   (tableAI.getValueAt(0, 0) == "X" && tableAI.getValueAt(2, 0) == "X") ||
+				   (tableAI.getValueAt(1, 0) == "X" && tableAI.getValueAt(2, 0) == "X")) &&
+				   (tableAI.getValueAt(0, 0) == null || tableAI.getValueAt(1, 0) ==  null || tableAI.getValueAt(2, 0) == null)){
+					if(tableAI.getValueAt(0, 0) == null){
+						tableAI.setValueAt("O", 0, 0);
+						return true;
+
+					}
+					if(tableAI.getValueAt(1, 0) == null){
+						tableAI.setValueAt("O", 1, 0);
+						return true;
+
+					}
+					if(tableAI.getValueAt(2, 0) == null){
+						tableAI.setValueAt("O", 2, 0);
+						return true;
+
+					}
+					return true;
+				}
+				if(((tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(1, 1) == "X") || 
+				   (tableAI.getValueAt(0, 1) == "X" && tableAI.getValueAt(2, 1) == "X") ||
+				   (tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(2, 1) == "X")) &&
+				   (tableAI.getValueAt(0, 1) == null || tableAI.getValueAt(1, 1) ==  null || tableAI.getValueAt(2, 1) == null)){
+					if(tableAI.getValueAt(0, 1) == null){
+						tableAI.setValueAt("O", 0, 1);
+						return true;
+
+					}
+					if(tableAI.getValueAt(1, 1) == null){
+						tableAI.setValueAt("O", 1, 1);
+						return true;
+
+					}
+					if(tableAI.getValueAt(2, 1) == null){
+						tableAI.setValueAt("O", 2, 1);
+						return true;
+
+					}
+					return true;
+				}
+				if(((tableAI.getValueAt(0, 2) == "X" && tableAI.getValueAt(1, 2) == "X") || 
+				   (tableAI.getValueAt(0, 2) == "X" && tableAI.getValueAt(2, 2) == "X") ||
+				   (tableAI.getValueAt(1, 2) == "X" && tableAI.getValueAt(2, 2) == "X")) &&
+				   (tableAI.getValueAt(0, 2) == null || tableAI.getValueAt(1, 2) ==  null || tableAI.getValueAt(2, 2) == null)){
+					if(tableAI.getValueAt(0, 2) == null){
+						tableAI.setValueAt("O", 0, 2);
+						return true;
+
+					}
+					if(tableAI.getValueAt(1, 2) == null){
+						tableAI.setValueAt("O", 1, 2);
+						return true;
+
+					}
+					if(tableAI.getValueAt(2, 2) == null){
+						tableAI.setValueAt("O", 2, 2);
+						return true;
+
+					}
+					return true;
+				}
+				//Diagonal Defend
+				if(((tableAI.getValueAt(0, 0) == "X" && tableAI.getValueAt(1, 1) == "X") || 
+				   (tableAI.getValueAt(0, 0) == "X" && tableAI.getValueAt(2, 2) == "X") ||
+				   (tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(2, 2) == "X")) &&
+				   (tableAI.getValueAt(0, 0) == null || tableAI.getValueAt(1, 1) ==  null || tableAI.getValueAt(2, 2) == null)){
+					if(tableAI.getValueAt(0, 0) == null){
+						tableAI.setValueAt("O", 0, 0);
+						return true;
+
+					}
+					if(tableAI.getValueAt(1, 1) == null){
+						tableAI.setValueAt("O", 1, 1);
+						return true;
+
+					}
+					if(tableAI.getValueAt(2, 2) == null){
+						tableAI.setValueAt("O", 2, 2);
+						return true;
+					}
+					return true;
+				}
+				if(((tableAI.getValueAt(0, 2) == "X" && tableAI.getValueAt(1, 1) == "X") || 
+				   (tableAI.getValueAt(0, 2) == "X" && tableAI.getValueAt(2, 0) == "X") ||
+				   (tableAI.getValueAt(1, 1) == "X" && tableAI.getValueAt(2, 0) == "X")) &&
+				   (tableAI.getValueAt(0, 2) == null || tableAI.getValueAt(1, 1) ==  null || tableAI.getValueAt(2, 0) == null)){
+					if(tableAI.getValueAt(0, 2) == null){
+						tableAI.setValueAt("O", 0, 2);
+						System.out.println("got to case 1");
+						return true;
+
+					}
+					if(tableAI.getValueAt(1, 1) == null){
+						tableAI.setValueAt("O", 1, 1);
+						System.out.println("got to case 2");
+						return true;
+
+					}
+					if(tableAI.getValueAt(2, 0) == null){
+						tableAI.setValueAt("O", 2, 0);
+						System.out.println("got to case 3");
+						return true;
+
+					}
+					return true;
+				}
+				
+				return false;
 	}
 	
 	public void resetGUI(){
@@ -247,7 +559,7 @@ public class Algorithm {
 			        int column = i;
 			      // do some action if appropriate column
 			      
-			      tableAI.setValueAt("", row, column);
+			      tableAI.setValueAt(null, row, column);
 			      
 			      
 				}
@@ -259,6 +571,32 @@ public class Algorithm {
 	
 	
 	}
+
+	public void findNull(){
+		int j;
+		int i;
+			for(j = 0; j < 3; j++){
+				for(i = 0; i < 3; i++){
+				  
+					
+					int row = j;
+			        int column = i;
+			      // look for the null value and set it if null
+			      if(tableAI.getValueAt(row, column) == null){
+			    	  tableAI.setValueAt("O", row, column);
+			    	  moves++;
+			    	  return;
+			      }
+			      
+			      
+				}
+				if((i == 2) && (j == 2)){
+					break;
+				}
+				
+			}
+	}
+
 }
 
 	
